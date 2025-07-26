@@ -46,22 +46,8 @@ The app minimizes prop drilling by using Context API, but still demonstrates pas
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/parisa-0/TaskManager
-   cd your-repo-name
+   cd TaskManager
 
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-
-3. **Start the development server:**
-   ```bash
-   npm start
-
-4. **Run tests:**
-   ```bash
-   npm test
-
-=======
 
 2. **Install dependencies:**
    ```bash
