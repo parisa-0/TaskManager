@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo, Suspense } from "react";
 import { TaskContext } from "./TaskContext";
-import TaskCard from "./TaskCard";
 
+const TaskCard = React.lazy(() => import("./TaskCard"));
 
 export default function App() {
   const { tasks, addTask } = useContext(TaskContext);
@@ -22,6 +22,12 @@ export default function App() {
     setNewDueDate("");
     setNewDescription("");
   };
+
+  const taskCards = useMemo(
+    () =>
+      tasks.map((task) => <TaskCard key={task.id} task={task} />),
+    [tasks]
+  );
 
   return (
     <div className="min-h-screen bg-blue-50 flex flex-col items-center py-10 px-2 font-sans">
@@ -66,9 +72,9 @@ export default function App() {
         {tasks.length === 0 && (
           <div className="text-center text-blue-400 italic">No tasks yet</div>
         )}
-        {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+        <Suspense fallback={<div>Loading tasks...</div>}>
+          {taskCards}
+        </Suspense>
       </div>
     </div>
   );

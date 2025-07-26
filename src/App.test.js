@@ -1,7 +1,7 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "./App";
-import { TaskProvider } from "./TaskContext"; 
+import { TaskProvider } from "./TaskContext";
 
 const addTask = (name = "New Task", dueDate = "2025-07-26", description = "Description") => {
   fireEvent.change(screen.getByPlaceholderText(/task name/i), { target: { value: name } });
@@ -15,7 +15,6 @@ describe("App", () => {
     window.localStorage.clear();
   });
 
-  
   const renderWithProvider = (ui) => render(<TaskProvider>{ui}</TaskProvider>);
 
   it("renders the Task Manager title", () => {
@@ -28,20 +27,23 @@ describe("App", () => {
     expect(screen.getByText(/no tasks yet/i)).toBeInTheDocument();
   });
 
-  it("can add a new task", () => {
+  it("can add a new task", async () => {
     renderWithProvider(<App />);
     addTask("My Task", "2025-07-26", "My Description");
-    expect(screen.getByText("My Task")).toBeInTheDocument();
+    await screen.findByText("My Task");
     expect(screen.getByText("Due: 2025-07-26")).toBeInTheDocument();
     expect(screen.getByText("My Description")).toBeInTheDocument();
   });
 
-  it("can delete a task", () => {
+  it("can delete a task", async () => {
     renderWithProvider(<App />);
     addTask("Task to Delete", "2025-07-26", "Delete me");
+    await screen.findByText("Task to Delete");
     const deleteButton = screen.getByRole("button", { name: /delete/i });
     fireEvent.click(deleteButton);
-    expect(screen.queryByText("Task to Delete")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText("Task to Delete")).not.toBeInTheDocument();
+    });
   });
 
   it("does not add a task with empty name", () => {
