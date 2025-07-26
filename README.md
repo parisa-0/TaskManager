@@ -39,7 +39,8 @@ The app demonstrates **prop drilling** by passing task data and handler function
    ```bash
    git clone https://github.com/your-username/your-repo-name.git
    cd your-repo-name
-   
+
+
 2. **Install dependencies:**
    ```bash
    npm install
@@ -51,4 +52,17 @@ The app demonstrates **prop drilling** by passing task data and handler function
 4. **Run tests:**
    ```bash
    npm test
-   
+
+=======
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+
+3. **Start the development server:**
+   ```bash
+   npm start
+
+4. **Run tests:**
+   ```bash
+   npm test
