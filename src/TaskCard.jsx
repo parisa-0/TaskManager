@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { TaskContext } from "./TaskContext";
 
-export default function TaskCard({ task }) {
+function TaskCard({ task }) {
   const { deleteTask } = useContext(TaskContext);
 
   return (
@@ -25,3 +25,5 @@ export default function TaskCard({ task }) {
     </div>
   );
 }
+
+export default React.memo(TaskCard);
