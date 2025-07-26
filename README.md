@@ -9,35 +9,43 @@ A simple, modern task manager built with React and Tailwind CSS.
 - Responsive, clean UI with Tailwind CSS
 - Tasks are saved in your browser’s local storage
 - Tested with React Testing Library
+- Uses React Context API for global state management
 
 ## React Concepts Used
 
 ### React Hooks
 
 This app uses React hooks such as:
-- `useState` for managing the list of tasks and form inputs
+- `useState` for managing form inputs
 - `useEffect` for syncing tasks with local storage
+- `useContext` to consume the global task state provided by Context API
+- `useMemo` to memoize the list of task cards for performance optimization
 
-### State Management
+### State Management with Context API
 
-All state is managed locally in the `App` component using React’s built-in state management (`useState`). The list of tasks and form fields are stored as state variables.
+State is managed globally using React’s **Context API** with a `TaskContext` provider. This allows sharing tasks and related functions (add, delete) across components without prop drilling.
+
+### Code Splitting and Lazy Loading
+
+The app uses `React.lazy` and `Suspense` to lazily load components like `TaskCard` and `AddTaskForm`, improving initial load performance by splitting code.
+
+### Error Handling
+
+An **Error Boundary** component is implemented to catch and display errors gracefully in the UI, preventing the entire app from crashing.
+
+### Memoization
+
+`useMemo` is used to optimize rendering performance by memoizing the list of task cards, so they only re-render when the tasks actually change.
 
 ### Prop Drilling
 
-The app demonstrates **prop drilling** by passing task data and handler functions (like `onDelete`) from the parent `App` component down to child components such as `TaskCard`. This shows how data and actions can be shared between components through props.
-
-## Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v20 or higher recommended)
-- [npm](https://www.npmjs.com/)
+The app minimizes prop drilling by using Context API, but still demonstrates passing some props like task data and handlers to child components.
 
 ### Installation & Usage
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone https://github.com/parisa-0/TaskManager
    cd your-repo-name
 
 
