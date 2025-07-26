@@ -1,38 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
+import { TaskContext } from "./TaskContext";
 import TaskCard from "./TaskCard";
 
+
 export default function App() {
-  const [tasks, setTasks] = useState(() => {
-    const saved = localStorage.getItem("tasks");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const { tasks, addTask } = useContext(TaskContext);
 
   const [newTask, setNewTask] = useState("");
   const [newDueDate, setNewDueDate] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
-  const addTask = () => {
+  const handleAddTask = () => {
     if (!newTask.trim()) return;
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        name: newTask,
-        dueDate: newDueDate,
-        description: newDescription,
-      },
-    ]);
+    addTask({
+      id: Date.now(),
+      name: newTask,
+      dueDate: newDueDate,
+      description: newDescription,
+    });
     setNewTask("");
     setNewDueDate("");
     setNewDescription("");
-  };
-
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   return (
@@ -67,7 +55,7 @@ export default function App() {
           rows={2}
         />
         <button
-          onClick={addTask}
+          onClick={handleAddTask}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition-colors text-lg shadow"
           aria-label="Add task"
         >
@@ -79,7 +67,7 @@ export default function App() {
           <div className="text-center text-blue-400 italic">No tasks yet</div>
         )}
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} onDelete={deleteTask} />
+          <TaskCard key={task.id} task={task} />
         ))}
       </div>
     </div>

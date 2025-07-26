@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import App from "./App";
-
+import { TaskProvider } from "./TaskContext"; 
 
 const addTask = (name = "New Task", dueDate = "2025-07-26", description = "Description") => {
   fireEvent.change(screen.getByPlaceholderText(/task name/i), { target: { value: name } });
@@ -15,18 +15,21 @@ describe("App", () => {
     window.localStorage.clear();
   });
 
+  
+  const renderWithProvider = (ui) => render(<TaskProvider>{ui}</TaskProvider>);
+
   it("renders the Task Manager title", () => {
-    render(<App />);
+    renderWithProvider(<App />);
     expect(screen.getByText(/task manager/i)).toBeInTheDocument();
   });
 
   it("shows 'No tasks yet' when there are no tasks", () => {
-    render(<App />);
+    renderWithProvider(<App />);
     expect(screen.getByText(/no tasks yet/i)).toBeInTheDocument();
   });
 
   it("can add a new task", () => {
-    render(<App />);
+    renderWithProvider(<App />);
     addTask("My Task", "2025-07-26", "My Description");
     expect(screen.getByText("My Task")).toBeInTheDocument();
     expect(screen.getByText("Due: 2025-07-26")).toBeInTheDocument();
@@ -34,7 +37,7 @@ describe("App", () => {
   });
 
   it("can delete a task", () => {
-    render(<App />);
+    renderWithProvider(<App />);
     addTask("Task to Delete", "2025-07-26", "Delete me");
     const deleteButton = screen.getByRole("button", { name: /delete/i });
     fireEvent.click(deleteButton);
@@ -42,7 +45,7 @@ describe("App", () => {
   });
 
   it("does not add a task with empty name", () => {
-    render(<App />);
+    renderWithProvider(<App />);
     addTask("", "2025-07-26", "No name");
     expect(screen.getByText(/no tasks yet/i)).toBeInTheDocument();
   });
